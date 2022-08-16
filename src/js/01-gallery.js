@@ -9,8 +9,6 @@ const refs = {
   gallery: document.querySelector('.gallery'),
 };
 
-refs.gallery.addEventListener('click', galleryClick);
-
 const markup = galleryItems
   .map(({ preview, original, description }) => {
     return `
@@ -26,13 +24,7 @@ const markup = galleryItems
 
 refs.gallery.insertAdjacentHTML('beforeend', markup);
 
-function galleryClick(e) {
-  e.preventDefault();
-  if (e.target.nodeName !== 'IMG') {
-    return;
-  }
-  const lightbox = new SimpleLightbox('.gallery a', {
-    captionDelay: 250,
-    captionsData: 'alt',
-  });
-}
+new SimpleLightbox('.gallery a', {
+  captionDelay: 250,
+  captionsData: 'alt',
+});
