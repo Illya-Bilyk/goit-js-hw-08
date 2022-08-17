@@ -6,12 +6,14 @@ const refs = {
   textarea: document.querySelector('.feedback-form textarea'),
 };
 
-const labelData = {};
-console.log('labelData', labelData);
+refs.form.addEventListener('input', throttle(onFormInput, 500));
+refs.form.addEventListener('submit', onFormSub);
 
-refs.form.addEventListener('input', e => {
-  e.preventDefault();
+let labelData = {};
 
+fillTheFields();
+
+function onFormInput(e) {
   if (e.target.nodeName === 'INPUT') {
     labelData.email = e.target.value;
   }
@@ -20,18 +22,31 @@ refs.form.addEventListener('input', e => {
   }
 
   setDataToLS(labelData);
-});
+}
+
+function onFormSub(e) {
+  e.preventDefault();
+  console.log('labelData', labelData);
+  localStorage.removeItem('feedback-form-state');
+  refs.input.value = '';
+  refs.textarea.value = '';
+}
 
 function setDataToLS(labelData) {
   const toString = JSON.stringify(labelData);
   localStorage.setItem('feedback-form-state', toString);
 }
 
-// function fillTheFields() {
-//   const storageСheck = localStorage.getItem('feedback-form-state');
-//   if (!storageСheck) return;
-//   const parsedData = JSON.parse(storageСheck);
-
-//   refs.input.textContent = parsedData.email;
-// }
-// fillTheFields();
+function fillTheFields() {
+  const storageСheck = localStorage.getItem('feedback-form-state');
+  if (!storageСheck) return;
+  const parsedData = JSON.parse(storageСheck);
+  if (parsedData.email) {
+    refs.input.value = parsedData.email;
+    labelData.email = parsedData.email;
+  }
+  if (parsedData.message) {
+    refs.textarea.value = parsedData.message;
+    labelData.message = parsedData.message;
+  }
+}
