@@ -30,6 +30,7 @@ function onFormSub(e) {
   localStorage.removeItem('feedback-form-state');
   refs.input.value = '';
   refs.textarea.value = '';
+  labelData = {};
 }
 
 function setDataToLS(labelData) {
